@@ -1,0 +1,5 @@
+print("hey hi");
+random(1, 1000);
+callbackFunction(1, fn(test, lol) {
+    print(test);
+});

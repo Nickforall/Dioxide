@@ -1,0 +1,7 @@
+# Initializers
+var test = "test";
+var a = test;
+
+# Reassigning/things.
+test = a;
+b = 1;

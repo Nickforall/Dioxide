@@ -1,0 +1,12 @@
+if x then y = x;
+if(x) {
+    y = x;
+};
+
+if x then y = x else x = y;
+
+if(x) {
+    y = x;
+} else {
+    x = y;
+}

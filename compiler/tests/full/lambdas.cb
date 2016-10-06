@@ -1,0 +1,11 @@
+fn() {
+    test = "function";
+};
+
+λ() {
+    test = "lol";
+};
+
+fn(lol, test, fuck) {
+    test = "arguments";
+};
