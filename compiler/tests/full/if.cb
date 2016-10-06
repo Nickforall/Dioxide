@@ -9,4 +9,12 @@ if(x) {
     y = x;
 } else {
     x = y;
-}
+};
+
+if(a) {
+    y = a;
+} else if(b) {
+    y = b;
+} else {
+    y = "fuckOff!";
+};
