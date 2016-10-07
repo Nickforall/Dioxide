@@ -1,6 +1,9 @@
 {
-  "dependencies": {
-    "colors": "^1.1.2",
-    "debug": "^2.2.0"
-  }
+    "scripts": {
+        "test": "node compiler/tests/fullLanguageTest.js"
+    },
+    "dependencies": {
+        "colors": "^1.1.2",
+        "debug": "^2.2.0"
+    }
 }

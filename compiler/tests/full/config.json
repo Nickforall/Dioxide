@@ -3,6 +3,7 @@
         "variables.cb",
         "lambdas.cb",
         "calls.cb",
-        "if.cb"
+        "if.cb",
+        "booleans.cb"
     ]
 }
