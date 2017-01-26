@@ -11,5 +11,13 @@ module.exports = {
     valmod: 9, //modulus
     pushtrue: 10,
     pushfalse: 11,
-    fncall: 12
+    fncall: 12,
+    opor: 13,
+    opand: 14,
+    opsmaller: 15,
+    opgreater: 16,
+    opgreatereq: 17,
+    opsmallereq: 18,
+    opequal: 19,
+    opnotequal: 20,
 }

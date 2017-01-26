@@ -1,6 +1,22 @@
 const OP = require('./opcodes');
 const colors = require('colors');
 
+const operators = {
+    "||": OP.opor,
+    "&&": OP.opand,
+    "<": OP.opsmaller,
+    ">": OP.opgreater,
+    "<=": OP.opsmallereq,
+    ">=": OP.opgreatereq,
+    "==": OP.opequal,
+    "!=": OP.opnotequal,
+    "+": OP.valadd,
+    "-": OP.valsub,
+    "*": OP.valmlp,
+    "/": OP.valdiv,
+    "%": OP.valmod
+};
+
 function readTree(prog) {
     let image = require('./image')();
 
@@ -19,8 +35,11 @@ function readTree(prog) {
             case "num":
                 buildNum(expression);
                 break;
+            case "binary":
+                buildBinary(expression);
+                break;
             default:
-                throw new Error(`Undefined SyntaxTree Expression Type ${expression.type}`);
+                throw new Error(`Undefined SyntaxTree Expression Type "${expression.type}"`);
         }
     }
 
@@ -43,6 +62,12 @@ function readTree(prog) {
     function buildString(expression) {
         let stringAddress = image.pushString(expression.value);
         image.appendToMain([OP.pushstr, stringAddress]);
+    }
+
+    function buildBinary(expression) {
+        handleExpression(expression.left)
+        handleExpression(expression.right)
+        image.pushToMain(operators[expression.operator])
     }
 
     //loop through the top script
