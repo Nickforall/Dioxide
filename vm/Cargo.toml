@@ -1,6 +1,0 @@
-[package]
-name = "Dioxide Virtual Machine"
-version = "0.1.0"
-authors = ["Nickforall <hello@nickforall.nl>"]
-
-[dependencies]
