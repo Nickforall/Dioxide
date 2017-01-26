@@ -4,11 +4,12 @@ module.exports = {
     pushstr: 2,
     pusharr: 3,
     pushflt: 4,
-    valadd: 5,
-    nummlp: 6,
-    numdiv: 7,
-    numsub: 8,
-    nummod: 9,
+    valadd: 5, //add
+    valmlp: 6, //multiply
+    valdiv: 7, //divide
+    valsub: 8, //substract
+    valmod: 9, //modulus
     pushtrue: 10,
-    pushfalse: 11
+    pushfalse: 11,
+    fncall: 12
 }

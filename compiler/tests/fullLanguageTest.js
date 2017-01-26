@@ -1,7 +1,7 @@
 console.log("Hello and, again, welcome to the Carbonscript computer-aided enrichment center.");
 console.log("We hope your brief detention in the relaxation vault has been a pleasant one.");
 
-console.log("We will start testing soon <3");
+console.log("We will start testing soon.");
 
 const config = require("./full/config.json");
 const compiler = require("../index.js");
@@ -13,7 +13,6 @@ const color = require("colors");
 const showAST = false;
 
 console.log("Loading a grand total of " + config.files.length + " tests.");
-//console.log();
 
 var success = 0;
 
