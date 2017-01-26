@@ -9,6 +9,7 @@ const Image = function () {
     return {
         pushString: function (str) {
             debug("Added " + str + "to string registry");
+            if(strings.indexOf(str) > -1) return strings.indexOf(str);
             return (strings.push(str) - 1);
         },
         pushToMain: function (bytecode) {
