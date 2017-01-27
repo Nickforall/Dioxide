@@ -7,18 +7,18 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-console.log("Carbonscript v2")
-process.stdout.write("> ");
+console.log("Carbonscript v2".inverse)
+process.stdout.write("> ".green);
 
 rl.on('line', (input) => {
     try {
         compiler.parse(input, (result) => {
-            console.log(JSON.stringify(result, null, 2));
-            process.stdout.write("> ");
+            console.log(JSON.stringify(result, null, 2).gray);
+            process.stdout.write("> ".green);
         });
     } catch(error) {
         console.log(colors.red(error.message));
         console.log(error.stack);
-        process.stdout.write("> ");
+        process.stdout.write("> ".green);
     }
 });
