@@ -26,6 +26,9 @@ function readTree(prog) {
     //basic for handling a tree object
     function handleExpression(expression) {
         switch (expression.type) {
+            case "var":
+                buildVarLoad();
+                break;
             case "call":
                 buildCall(expression);
                 break;
