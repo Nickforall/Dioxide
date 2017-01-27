@@ -23,5 +23,7 @@ module.exports = {
     varload: 21,
     varstore: 22,
     varcreate: 23,
-    ifblock: 24
+    ifblock: 24,
+    pushblock: 25,
+    fnlambda: 26
 }

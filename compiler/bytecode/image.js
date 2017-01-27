@@ -7,6 +7,7 @@ const Image = function () {
     let blocks = [];
 
     return {
+        type: "IMAGE",
         pushString: function (str) {
             debug("Added " + str + "to string registry");
             if(strings.indexOf(str) > -1) return strings.indexOf(str);

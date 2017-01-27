@@ -1,5 +1,8 @@
 const OP = require('./opcodes');
 const colors = require('colors');
+const Image = require('./image');
+const Block = require('./block');
+
 
 const operators = {
     "||": OP.opor,
@@ -17,9 +20,31 @@ const operators = {
     "%": OP.valmod
 };
 
-function readTree(prog) {
-    let image = require('./image')();
+function buildImage(prog) {
+    let image = Image();
 
+    return readTree(prog, image);
+}
+
+function buildBlock(prog, image) {
+    let block = Block(image);
+
+    return readTree(prog, block).serialize();
+}
+
+function getFormattedBody(expression) {
+    if(expression.type == "script") return expression;
+
+    let prog = []
+    prog.push(expression)
+
+    return {
+        type: "script",
+        prog: prog
+    }
+}
+
+function readTree(prog, image) {
     if(prog.type != "script" || !prog.prog) throw new Error("What? Incorrect syntax tree");
     const program = prog.prog;
 
@@ -27,7 +52,7 @@ function readTree(prog) {
     function handleExpression(expression) {
         switch (expression.type) {
             case "var":
-                buildVarLoad();
+                buildVarLoad(expression);
                 break;
             case "call":
                 buildCall(expression);
@@ -49,6 +74,9 @@ function readTree(prog) {
                 break;
             case "assign":
                 buildAssign(expression);
+                break;
+            case "function":
+                buildLambda(expression);
                 break;
             default:
                 throw new Error(`Undefined SyntaxTree Expression Type "${expression.type}"`);
@@ -92,7 +120,7 @@ function readTree(prog) {
     }
 
     //loads a variable from storage
-    function buildVarLoad() {
+    function buildVarLoad(expression) {
         let nameAddress = image.pushString(expression.value);
         image.appendToMain([OP.varload, nameAddress])
     }
@@ -115,13 +143,26 @@ function readTree(prog) {
         image.pushToMain(operators[expression.operator])
     }
 
+    //builds lambda
+    function buildLambda(expression) {
+        let blockAddress = image.pushBlock(buildBlock(getFormattedBody(expression.body), image));
+
+        for (var i = 0; i < expression.args.length; i++) {
+            let stringAddress = image.pushString(expression.args[i])
+            image.appendToMain([OP.pushstr, stringAddress]);
+        }
+
+        image.appendToMain([OP.pushblock, blockAddress]);
+        image.appendToMain([OP.fnlambda, expression.args.length]);
+    }
+
     //loop through the top script
     for (var i = 0; i < program.length; i++) {
-        var expression = program[i];
+        let expression = program[i];
         handleExpression(expression);
     }
 
     return image;
 }
 
-module.exports.compileTree = readTree;
+module.exports.compileTree = buildImage;

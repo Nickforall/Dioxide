@@ -124,7 +124,7 @@ function parse(input) {
     function parseLambda() {
         return {
             type: "function",
-            vars: delimited("(", ")", ",", parseVarName),
+            args: delimited("(", ")", ",", parseVarName),
             body: parseExpression()
         };
     }
