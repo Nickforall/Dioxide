@@ -41,12 +41,20 @@ function readTree(prog) {
             case "varInit":
                 buildVarInitNull(expression);
                 break;
+            case "bool":
+                buildBool(expression)
+                break;
             case "assign":
                 buildAssign(expression);
                 break;
             default:
                 throw new Error(`Undefined SyntaxTree Expression Type "${expression.type}"`);
         }
+    }
+
+    //build a boolean
+    function buildBool(expression) {
+        expression.value ? image.pushToMain(OP.pushtrue) : image.pushToMain(OP.pushfalse)
     }
 
     //build a call in bytecode
