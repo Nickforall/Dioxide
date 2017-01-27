@@ -7,7 +7,7 @@ function TokenStream(input) {
         "else",
         "fn",
         "true",
-        "else",
+        "false",
         "λ"
     ];
 
