@@ -8,7 +8,8 @@ function TokenStream(input) {
         "fn",
         "true",
         "false",
-        "λ"
+        "λ",
+        "null"
     ];
 
     return {

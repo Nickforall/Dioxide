@@ -78,9 +78,16 @@ function readTree(prog, image) {
             case "function":
                 buildLambda(expression);
                 break;
+            case "null":
+                buildNull(expression);
+                break;
             default:
                 throw new Error(`Undefined SyntaxTree Expression Type "${expression.type}"`);
         }
+    }
+
+    function buildNull(expression) {
+        image.pushToMain(OP.null)
     }
 
     //build a boolean

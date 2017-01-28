@@ -134,6 +134,12 @@ function parse(input) {
             value : input.next().value == "true"
         };
     }
+    function parseNull() {
+        return {
+            type: "null",
+            value: input.next().value ? null : null
+        }
+    }
 
     function maybeCall(expr) {
         expr = expr();
@@ -151,6 +157,7 @@ function parse(input) {
 
             if (isPunc("{")) return parseScript();
             if (isKeyword("if")) return parseIf();
+            if (isKeyword("null")) return parseNull();
             if (isKeyword("true") || isKeyword("false")) return parseBool();
             if (isKeyword("var")) return parseVarInitializer();
             if (isKeyword("fn") || isKeyword("λ")) {
