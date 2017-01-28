@@ -3,6 +3,22 @@ const colors = require('colors');
 const Image = require('./image/image');
 const Block = require('./image/block');
 
+const operators = {
+    "||": OP.opor,
+    "&&": OP.opand,
+    "<": OP.opsmaller,
+    ">": OP.opgreater,
+    "<=": OP.opsmallereq,
+    ">=": OP.opgreatereq,
+    "==": OP.opequal,
+    "!=": OP.opnotequal,
+    "+": OP.valadd,
+    "-": OP.valsub,
+    "*": OP.valmlp,
+    "/": OP.valdiv,
+    "%": OP.valmod
+};
+
 function buildImage(prog) {
     let image = Image();
 

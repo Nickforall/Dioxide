@@ -24,4 +24,4 @@ class CBNumber extends CarbonBase {
     }
 }
 
-module.exports = CBString;
+module.exports = CBNumber;
