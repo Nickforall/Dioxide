@@ -1,4 +1,4 @@
-const OP = require('./opcodes');
+const OP = require('../../shared/opcodes');
 const colors = require('colors');
 const Image = require('./image/image');
 const Block = require('./image/block');

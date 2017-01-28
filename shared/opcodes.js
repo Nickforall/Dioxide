@@ -15,7 +15,7 @@ module.exports = {
     opor: 13,
     opand: 14,
     opsmaller: 15,
-    opgreater: 16, 
+    opgreater: 16,
     opgreatereq: 17,
     opsmallereq: 18,
     opequal: 19,
@@ -25,5 +25,6 @@ module.exports = {
     varcreate: 23,
     ifblock: 24,
     pushblock: 25,
-    fnlambda: 26
+    fnlambda: 26,
+    halt: 27
 }
