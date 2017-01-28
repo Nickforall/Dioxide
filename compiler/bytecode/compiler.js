@@ -180,6 +180,8 @@ function readTree(prog, image) {
         handleExpression(expression);
     }
 
+    image.pushToMain(OP.halt)
+
     return image;
 }
 
