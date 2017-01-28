@@ -1,8 +1,7 @@
 const OP = require('./opcodes');
 const colors = require('colors');
-const Image = require('./image');
-const Block = require('./block');
-
+const Image = require('./image/image');
+const Block = require('./image/block');
 
 const operators = {
     "||": OP.opor,

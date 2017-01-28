@@ -1,4 +1,4 @@
-const imageFormat = require("../../compilerinfo.json").image_format;
+const imageFormat = require("../../../compilerinfo.json").image_format;
 const debug = require('debug')('image')
 
 const Image = function () {

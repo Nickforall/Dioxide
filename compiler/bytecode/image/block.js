@@ -2,6 +2,7 @@ const Block = function (parent) {
     var main = [];
 
     return {
+        type: "BLOCK",
         pushString: function (str) {
             if(!(parent.type && parent.type == "IMAGE")) throw new Error("Infinite image generation loop in pushString");
             return parent.pushString(str);
