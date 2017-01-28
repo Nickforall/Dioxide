@@ -81,6 +81,9 @@ function readTree(prog, image) {
             case "null":
                 buildNull(expression);
                 break;
+            case "if":
+                buildIfStatement(expression);
+                break;
             default:
                 throw new Error(`Undefined SyntaxTree Expression Type "${expression.type}"`);
         }
@@ -161,6 +164,15 @@ function readTree(prog, image) {
 
         image.appendToMain([OP.pushblock, blockAddress]);
         image.appendToMain([OP.fnlambda, expression.args.length]);
+    }
+
+    //builds if statement
+    function buildIfStatement(expression) {
+        let blockAddress = image.pushBlock(buildBlock(getFormattedBody(expression.then), image));
+
+        handleExpression(expression.cond);
+        image.appendToMain([OP.pushblock, blockAddress]);
+        image.appendToMain([OP.ifblock]);
     }
 
     //loop through the top script
