@@ -3,6 +3,7 @@ const OP = require('../shared/opcodes');
 const CarbonValueMath = require("./operations/basicmath");
 const CBString = require("./types/CBString");
 const CBNumber = require("./types/CBNumber");
+const CBBool = require("./types/CBBool");
 
 var globals = require('./stdlib/globals')
 
@@ -48,6 +49,12 @@ module.exports = function(image) {
                     b = stack[sp--];
                     a = stack[sp--];
                     stack[++sp] = CarbonValueMath.add(a, b);
+                    break;
+                case OP.pushtrue:
+                    stack[++sp] = new CBBool(true);
+                    break;
+                case OP.pushfalse:
+                    stack[++sp] = new CBool(false);
                     break;
                 default:
                     throw new Error(`Unexpected opcode: ${opcode} on address ${cp}`);
