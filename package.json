@@ -1,10 +1,29 @@
 {
+  "name": "dioxide",
   "scripts": {
     "test": "node compiler/tests/fullLanguageTest.js"
   },
   "dependencies": {
     "colors": "^1.1.2",
+    "command-line-args": "^3.0.5",
     "debug": "^2.2.0",
     "readline": "^1.3.0"
-  }
+  },
+  "bin": {
+    "carbonc": "./index.js"
+  },
+  "description": "**Dioxide** is the main compiler and runtime for the Carbonscript language.",
+  "version": "0.1.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nickforall/Dioxide.git"
+  },
+  "author": "Nick Vernij (hello@nickforall.nl)",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Nickforall/Dioxide/issues"
+  },
+  "homepage": "https://github.com/Nickforall/Dioxide#readme"
 }
