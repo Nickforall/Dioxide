@@ -1,5 +1,5 @@
 const CBString = require('./CBString');
-const CBBool = require('./CBBool');
+//const CBBool = require('./CBBool');
 
 class CarbonBase {
     constructor(typename) {
@@ -11,7 +11,7 @@ class CarbonBase {
     }
 
     toCbBoolean() {
-        return new CBBool(this.toJsBoolean())
+        //return new CBBool(this.toJsBoolean())
     }
 
     toJsBoolean() {
@@ -19,7 +19,7 @@ class CarbonBase {
     }
 
     toCbString() {
-        return new CBString(this.toJsString());
+        //return new CBString(this.toJsString());
     }
 
     toJsString() {
@@ -27,7 +27,7 @@ class CarbonBase {
     }
 
     valAdd(value) {
-        return new CBString(this.toJsString() + value.toJsString());
+        //return new CBString(this.toJsString() + value.toJsString());
     }
 }
 

@@ -1,5 +1,4 @@
-const CarbonBase = require("./CarbonBase")
-const CBString = require('./CBString');
+const CarbonBase = require("./CarbonBase");
 
 class CBBool extends CarbonBase {
     constructor(jsbool) {

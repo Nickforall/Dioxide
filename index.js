@@ -1,5 +1,29 @@
+#!/usr/bin/env node
+
+const commandLineArgs = require('command-line-args');
+const path = require("path");
+const fs = require("fs");
+
+const optionDefinitions = [
+  { name: 'f', type: String, defaultOption: true }
+];
+
+const options = commandLineArgs(optionDefinitions);
+
+if(!options.f) {
+    throw new Error("No Input File Specified!");
+}
+
+const filepath = path.join(process.cwd(), options.f);
+const filecontents = fs.readFileSync(filepath, 'utf8');
+
+const parser = require("./compiler/index");
+const compiler = require("./compiler/bytecode/compiler")
+
 const VM = require("./vm/VM");
 
-var test = VM({
-    main: [0, 1, 2, 3, 4, 5, 6, 7]
+parser.parse(filecontents, (tree) => {
+    compiler.compileTree(tree, (image) => {
+        VM(image.serialize());
+    });
 });

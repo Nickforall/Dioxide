@@ -19,10 +19,16 @@ const operators = {
     "%": OP.valmod
 };
 
-function buildImage(prog) {
+function buildImage(prog, callback) {
     let image = Image();
 
-    return readTree(prog, image);
+    let outimage = readTree(prog, image);
+
+    if(callback) {
+        callback(outimage);
+    }
+
+    return outimage;
 }
 
 function buildBlock(prog, image) {
