@@ -2,6 +2,14 @@
 
 **Dioxide** is the main compiler and runtime for the Carbonscript language.
 
+## Installation
+
+You can install Dioxide by cloning this repository, and running `npm install -g` in its root.
+
+## Usage
+
+You can compile any utf8 file by running `carbonc filename.cb`
+
 ## What is Carbonscript?
 
 Carbonscript is a language designed by [Nick Vernij](https://github.com/nickforall), I created this language because I was simply bored, and I was annoyed by some of the things other languages do.
