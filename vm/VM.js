@@ -1,6 +1,7 @@
 const OP = require('../shared/opcodes');
 
 const CarbonValueMath = require("./operations/basicmath");
+const CarbonBooleanLogic = require("./operations/booleans");
 const CBString = require("./types/CBString");
 const CBNumber = require("./types/CBNumber");
 const CBBool = require("./types/CBBool");
@@ -80,11 +81,51 @@ module.exports = function(image) {
                 case OP.pushfalse:
                     stack[++sp] = new CBool(false);
                     break;
+                case OP.opor:
+                    a = stack[sp--];
+                    b = stack[sp--];
+                    stack[++sp] = CarbonBooleanLogic.or(a, b);
+                    break;
+                case OP.opand:
+                    a = stack[sp--];
+                    b = stack[sp--];
+                    stack[++sp] = CarbonBooleanLogic.and(a, b);
+                    break;
+                case OP.opsmaller:
+                    a = stack[sp--];
+                    b = stack[sp--];
+                    stack[++sp] = CarbonBooleanLogic.smaller(a, b);
+                    break;
+                case OP.opgreater:
+                    a = stack[sp--];
+                    b = stack[sp--];
+                    stack[++sp] = CarbonBooleanLogic.greater(a, b);
+                    break;
+                case OP.opgreatereq:
+                    a = stack[sp--];
+                    b = stack[sp--];
+                    stack[++sp] = CarbonBooleanLogic.greatereq(a, b);
+                    break;
+                case OP.opsmallereq:
+                    a = stack[sp--];
+                    b = stack[sp--];
+                    stack[++sp] = CarbonBooleanLogic.smallereq(a, b);
+                    break;
+                case OP.opequal:
+                    a = stack[sp--];
+                    b = stack[sp--];
+                    stack[++sp] = CarbonBooleanLogic.equal(a, b);
+                    break;
+                case OP.opequal:
+                    a = stack[sp--];
+                    b = stack[sp--];
+                    stack[++sp] = CarbonBooleanLogic.notequal(a, b);
+                    break;
                 default:
                     throw new Error(`Unexpected opcode: ${opcode} on address ${cp}`);
             }
 
-            //console.log(stack);
+            console.log(stack);
 
             opcode = code[cp];
         }
