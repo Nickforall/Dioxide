@@ -4,6 +4,7 @@ const CarbonValueMath = require("./operations/basicmath");
 const CBString = require("./types/CBString");
 const CBNumber = require("./types/CBNumber");
 const CBBool = require("./types/CBBool");
+const CBNull = require("./types/CBNull");
 
 var globals = require('./stdlib/globals')
 
@@ -23,6 +24,9 @@ module.exports = function(image) {
             var a, b, c;
 
             switch (opcode) {
+                case OP.null:
+                    stack[++sp] = new CBNull();
+                    break;
                 case OP.pushstr:
                     stack[++sp] = new CBString(string(code[cp++]));
                     break;
