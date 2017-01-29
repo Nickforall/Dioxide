@@ -14,14 +14,6 @@ class CBNumber extends CarbonBase {
     toJsString() {
         return "" + this.content;
     }
-
-    valAdd(value) {
-        if(value.getTypename() === "NUMBER") {
-            return new CBNumber(value.toJsNumber() + this.content)
-        } else {
-            super.valAdd(value);
-        }
-    }
 }
 
 module.exports = CBNumber;

@@ -1,6 +1,8 @@
 const OP = require('../shared/opcodes');
 
-const CBString = require("./types/CBString")
+const CarbonValueMath = require("./operations/basicmath");
+const CBString = require("./types/CBString");
+const CBNumber = require("./types/CBNumber");
 
 var globals = require('./stdlib/globals')
 
@@ -38,6 +40,14 @@ module.exports = function(image) {
                         throw new Error("Undefined Function " + b)
                     }
 
+                    break;
+                case OP.pushnum:
+                    stack[++sp] = new CBNumber(code[cp++]);
+                    break;
+                case OP.valadd:
+                    b = stack[sp--];
+                    a = stack[sp--];
+                    stack[++sp] = CarbonValueMath.add(a, b);
                     break;
                 default:
                     throw new Error(`Unexpected opcode: ${opcode} on address ${cp}`);
