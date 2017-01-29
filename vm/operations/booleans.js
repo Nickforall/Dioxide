@@ -53,7 +53,6 @@ module.exports = {
     },
     equal: function(value1, value2) {
         if(isNumber(value1, value2)) {
-            console.log("REACHED EQ")
             return new CBBool(value1.toJsNumber() == value2.toJsNumber())
         } else {
             return new CBBool(false)
