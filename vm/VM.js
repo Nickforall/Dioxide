@@ -50,6 +50,26 @@ module.exports = function(image) {
                     a = stack[sp--];
                     stack[++sp] = CarbonValueMath.add(a, b);
                     break;
+                case OP.valmlp:
+                    b = stack[sp--];
+                    a = stack[sp--];
+                    stack[++sp] = CarbonValueMath.multiply(a, b);
+                    break;
+                case OP.valdiv:
+                    b = stack[sp--];
+                    a = stack[sp--];
+                    stack[++sp] = CarbonValueMath.divide(a, b);
+                    break;
+                case OP.valsub:
+                    b = stack[sp--];
+                    a = stack[sp--];
+                    stack[++sp] = CarbonValueMath.subtract(a, b);
+                    break;
+                case OP.valmod:
+                    b = stack[sp--];
+                    a = stack[sp--];
+                    stack[++sp] = CarbonValueMath.modulus(a, b);
+                    break;
                 case OP.pushtrue:
                     stack[++sp] = new CBBool(true);
                     break;
