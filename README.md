@@ -8,7 +8,7 @@ You can install Dioxide by cloning this repository, and running `npm install -g`
 
 ## Usage
 
-You can compile any utf8 file by running `carbonc filename.cb`
+You can execute any utf8 file with carbon code by running `carbonc filename.cb`
 
 ## What is Carbonscript?
 

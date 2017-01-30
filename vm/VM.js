@@ -41,7 +41,7 @@ module.exports = function(image) {
                     b = stack[sp--].toJsString(); //function name
 
                     if(globals[b]) {
-                        globals[b].apply({}, a);
+                        globals[b].apply(a);
                     } else {
                         throw new Error("Undefined Function " + b)
                     }
@@ -125,7 +125,7 @@ module.exports = function(image) {
                     throw new Error(`Unexpected opcode: ${opcode} on address ${cp}`);
             }
 
-            console.log(stack);
+            //console.log(stack);
 
             opcode = code[cp];
         }

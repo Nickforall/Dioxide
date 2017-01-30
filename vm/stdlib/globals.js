@@ -1,10 +1,12 @@
+const CBFunction = require("../types/CBFunction");
+
 const functions = {
-    print: function(cbObject) {
+    print: new CBFunction(false, function(cbObject) {
         process.stdout.write(cbObject.toJsString());
-    },
-    println: function(cbObject) {
+    }),
+    println: new CBFunction(false, function(cbObject) {
         process.stdout.write(cbObject.toJsString() + "\r\n")
-    }
-}
+    })
+};
 
 module.exports = functions;
