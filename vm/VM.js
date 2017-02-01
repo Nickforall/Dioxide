@@ -6,13 +6,33 @@ const CBString = require("./types/CBString");
 const CBNumber = require("./types/CBNumber");
 const CBBool = require("./types/CBBool");
 const CBNull = require("./types/CBNull");
+const ScopeClasses = require('./Scopes');
+
+const Scope = ScopeClasses.Scope;
+const ScopeManager = ScopeClasses.ScopeManager;
 
 var globals = require('./stdlib/globals')
 
 module.exports = function(image) {
-    cpu(image.main);
+    let mainScopeManager = new ScopeManager();
 
-    function cpu(code) {
+    let globalScopeId = mainScopeManager.createScope(-1);
+
+    loadGlobalSystemvars();
+    cpu(image.main, globalScopeId);
+
+    function loadGlobalSystemvars() {
+        for (var key in globals) {
+            if (globals.hasOwnProperty(key)) {
+                mainScopeManager.getScope(globalScopeId)
+                                .store(key, globals[key]);
+            }
+        }
+    }
+
+    function cpu(code, parentscope) {
+        let scopeid = mainScopeManager.createScope(parentscope);
+
         let stack = [];
         var sp = -1;
         var cp = 0;
@@ -120,6 +140,9 @@ module.exports = function(image) {
                     a = stack[sp--];
                     b = stack[sp--];
                     stack[++sp] = CarbonBooleanLogic.notequal(a, b);
+                    break;
+                case OP.varload:
+                    stack[++sp] = mainScopeManager.getFrom(scopeid, string(code[cp++]));
                     break;
                 default:
                     throw new Error(`Unexpected opcode: ${opcode} on address ${cp}`);
