@@ -144,6 +144,16 @@ module.exports = function(image) {
                 case OP.varload:
                     stack[++sp] = mainScopeManager.getFrom(scopeid, string(code[cp++]));
                     break;
+                case OP.varcreate:
+                    a = stack[sp--]; //values
+                    stack[++sp] = mainScopeManager.getScope(scopeid)
+                                                  .store(string(code[cp++]), a);
+                    break;
+                case OP.varstore:
+                    a = stack[sp--]; //values
+                    stack[++sp] = mainScopeManager.getScope(scopeid)
+                                                  .store(string(code[cp++]), a);
+                    break;
                 default:
                     throw new Error(`Unexpected opcode: ${opcode} on address ${cp}`);
             }
