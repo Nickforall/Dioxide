@@ -152,8 +152,6 @@ module.exports = function(image) {
 
             opcode = code[cp];
         }
-
-        process.stdout.write("\n")
     }
 
     function string(address) {
