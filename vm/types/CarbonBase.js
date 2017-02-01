@@ -4,6 +4,7 @@ const CBString = require('./CBString');
 class CarbonBase {
     constructor(typename) {
         this.typename = typename;
+        this._iscarbon = true;
     }
 
     getTypename() {
