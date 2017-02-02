@@ -57,6 +57,14 @@ class Scope {
     load(name) {
         return this.variables[name];
     }
+
+    feed(obj) {
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                this.store(key, obj[key]);
+            }
+        }
+    }
 }
 
 module.exports.ScopeManager = ScopeManager;

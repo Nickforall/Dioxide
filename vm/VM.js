@@ -21,7 +21,7 @@ module.exports = function(image) {
     let globalScopeId = mainScopeManager.createScope(-1);
 
     loadGlobalSystemvars();
-    cpu(image.main, globalScopeId);
+    cpu(image.main, mainScopeManager.createScope(globalScopeId));
 
     function loadGlobalSystemvars() {
         for (var key in globals) {
@@ -32,8 +32,8 @@ module.exports = function(image) {
         }
     }
 
-    function cpu(code, parentscope) {
-        let scopeid = mainScopeManager.createScope(parentscope);
+    function cpu(code, _scopeid) {
+        let scopeid = _scopeid;
 
         let stack = [];
         var sp = -1;
@@ -67,8 +67,13 @@ module.exports = function(image) {
 
                         if(c.getTypename() !== "FUNCTION")
                             throw new Error("Call on non function type " + c.getTypename() + " not allowed.")
-
-                        c.apply(a);
+                        if(c.isNative()) {
+                            b = mainScopeManager.createScope(scopeid);
+                            mainScopeManager.getScope(b).feed(c.toArgsObject(a));
+                            cpu(c.getCodeBlock().block, b);
+                        } else {
+                            c.apply(a);
+                        }
                     } else {
                         throw new Error("Undefined Function " + b)
                     }
@@ -174,7 +179,6 @@ module.exports = function(image) {
                     }
 
                     stack[++sp] = new CBFunction(true, b, a);
-                    console.log(stack[sp])
                     break;
                 default:
                     throw new Error(`Unexpected opcode: ${opcode} on address ${cp}`);

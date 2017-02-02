@@ -32,6 +32,16 @@ class CBFunction extends CarbonBase {
     toJsBoolean() {
         return false;
     }
+
+    toArgsObject(argvals) {
+        let obj = {};
+
+        for (var i = 0; i < this.args.length; i++) {
+            obj[this.args[i]] = argvals[i];
+        }
+
+        return obj;
+    }
 }
 
 module.exports = CBFunction;
