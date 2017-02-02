@@ -6,7 +6,9 @@ const CBString = require("./types/CBString");
 const CBNumber = require("./types/CBNumber");
 const CBBool = require("./types/CBBool");
 const CBNull = require("./types/CBNull");
+const CBFunction = require("./types/CBFunction");
 const ScopeClasses = require('./Scopes');
+const Block = require("./types/Block");
 
 const Scope = ScopeClasses.Scope;
 const ScopeManager = ScopeClasses.ScopeManager;
@@ -60,8 +62,8 @@ module.exports = function(image) {
 
                     b = stack[sp--].toJsString(); //function name
 
-                    if(globals[b]) {
-                        globals[b].apply(a);
+                    if(mainScopeManager.varExists(scopeid, b)) {
+                        mainScopeManager.getFrom(scopeid, b).apply(a);
                     } else {
                         throw new Error("Undefined Function " + b)
                     }
@@ -154,11 +156,24 @@ module.exports = function(image) {
                     stack[++sp] = mainScopeManager.getScope(scopeid)
                                                   .store(string(code[cp++]), a);
                     break;
+                case OP.pushblock:
+                    stack[++sp] = new Block(block(code[cp++]), image);
+                    break;
+                case OP.fnlambda:
+                    c = code[cp++]; //length of args
+                    b = stack[sp--]; //block
+                    a = []; //args array
+
+                    for (var i = 0; i < c; i++) {
+                        a.push(stack[sp--].toJsString());
+                    }
+
+                    stack[++sp] = new CBFunction(true, b, a);
+                    console.log(stack[sp])
+                    break;
                 default:
                     throw new Error(`Unexpected opcode: ${opcode} on address ${cp}`);
             }
-
-            //console.log(stack);
 
             opcode = code[cp];
         }
@@ -166,5 +181,9 @@ module.exports = function(image) {
 
     function string(address) {
         return image.strings[address];
+    }
+
+    function block(address) {
+        return image.blocks[address];
     }
 }

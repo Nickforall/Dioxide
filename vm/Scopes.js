@@ -18,8 +18,8 @@ class ScopeManager {
 
         if(scope.has(name)) return true;
 
-        if(scope.parent && scope.parent > -1) {
-            return varExists(scope.parent, name);
+        if(scope.parent !== undefined && scope.parent > -1) {
+            return this.varExists(scope.parent, name);
         } else {
             return false;
         }

@@ -1,9 +1,10 @@
 const CarbonBase = require("./CarbonBase");
 
 class CBFunction extends CarbonBase {
-    constructor(native, codeblock) {
+    constructor(native, codeblock, arglist) {
         super("FUNCTION");
 
+        this.args = arglist;
         this.native = native;
         this.content = codeblock;
     }
