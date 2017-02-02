@@ -1,4 +1,5 @@
 const CarbonBase = require("./CarbonBase");
+const CBNull = require("./CBNull");
 
 class CBFunction extends CarbonBase {
     constructor(native, codeblock, arglist) {
@@ -35,6 +36,11 @@ class CBFunction extends CarbonBase {
 
     toArgsObject(argvals) {
         let obj = {};
+
+        //Make sure args are in the right order (Dioxide#6)
+        while (this.args.length != argvals.length) {
+            argvals.unshift(new CBNull());
+        }
 
         for (var i = 0; i < this.args.length; i++) {
             obj[this.args[i]] = argvals[i];
