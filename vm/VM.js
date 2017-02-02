@@ -63,7 +63,12 @@ module.exports = function(image) {
                     b = stack[sp--].toJsString(); //function name
 
                     if(mainScopeManager.varExists(scopeid, b)) {
-                        mainScopeManager.getFrom(scopeid, b).apply(a);
+                        c = mainScopeManager.getFrom(scopeid, b);
+
+                        if(c.getTypename() !== "FUNCTION")
+                            throw new Error("Call on non function type " + c.getTypename() + " not allowed.")
+
+                        c.apply(a);
                     } else {
                         throw new Error("Undefined Function " + b)
                     }
