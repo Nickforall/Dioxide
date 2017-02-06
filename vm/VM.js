@@ -15,8 +15,10 @@ const ScopeManager = ScopeClasses.ScopeManager;
 
 var globals = require('./stdlib/globals')
 
+let mainScopeManager;
+
 module.exports.createVM = function(image) {
-    let mainScopeManager = new ScopeManager();
+    mainScopeManager = new ScopeManager();
 
     let globalScopeId = mainScopeManager.createScope(-1);
 
@@ -33,7 +35,7 @@ module.exports.createVM = function(image) {
     }
 }
 
-function cpu(code, _scopeid) {
+function cpu(code, _scopeid, image) {
     let scopeid = _scopeid;
 
     let stack = [];
@@ -69,9 +71,7 @@ function cpu(code, _scopeid) {
                     if(c.getTypename() !== "FUNCTION")
                         throw new Error("Call on non function type " + c.getTypename() + " not allowed.")
                     if(c.isNative()) {
-                        b = mainScopeManager.createScope(scopeid);
-                        mainScopeManager.getScope(b).feed(c.toArgsObject(a));
-                        cpu(c.getCodeBlock().block, b);
+                        c.execute(image, a, scopeid, mainScopeManager, cpu)
                     } else {
                         c.apply(a);
                     }

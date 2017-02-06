@@ -1,6 +1,8 @@
 const CarbonBase = require("./CarbonBase");
 const CBNull = require("./CBNull");
 
+const VM = require("../VM");
+
 class CBFunction extends CarbonBase {
     constructor(native, codeblock, arglist) {
         super("FUNCTION");
@@ -34,8 +36,14 @@ class CBFunction extends CarbonBase {
         return false;
     }
 
-    execute() {
+    execute(image, args, parentid, scopemanager, cpu) {
+        let scope = scopemanager.createScope(parentid);
+        //feed our args in the function
+        scopemanager.getScope(scope)
+                    .feed(this.toArgsObject(args));
 
+        //execute its instructions
+        cpu(this.getCodeBlock().block, scope, image);
     }
 
     toArgsObject(argvals) {
