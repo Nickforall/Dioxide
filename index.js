@@ -20,7 +20,7 @@ const filecontents = fs.readFileSync(filepath, 'utf8');
 const parser = require("./compiler/index");
 const compiler = require("./compiler/bytecode/compiler")
 
-const VM = require("./vm/VM");
+const VM = require("./vm/VM").createVM;
 
 parser.parse(filecontents, (tree) => {
     compiler.compileTree(tree, (image) => {

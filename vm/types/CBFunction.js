@@ -34,6 +34,10 @@ class CBFunction extends CarbonBase {
         return false;
     }
 
+    execute() {
+
+    }
+
     toArgsObject(argvals) {
         let obj = {};
 

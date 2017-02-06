@@ -15,13 +15,13 @@ const ScopeManager = ScopeClasses.ScopeManager;
 
 var globals = require('./stdlib/globals')
 
-module.exports = function(image) {
+module.exports.createVM = function(image) {
     let mainScopeManager = new ScopeManager();
 
     let globalScopeId = mainScopeManager.createScope(-1);
 
     loadGlobalSystemvars();
-    cpu(image.main, mainScopeManager.createScope(globalScopeId));
+    cpu(image.main, mainScopeManager.createScope(globalScopeId), image);
 
     function loadGlobalSystemvars() {
         for (var key in globals) {
@@ -31,161 +31,161 @@ module.exports = function(image) {
             }
         }
     }
+}
 
-    function cpu(code, _scopeid) {
-        let scopeid = _scopeid;
+function cpu(code, _scopeid) {
+    let scopeid = _scopeid;
 
-        let stack = [];
-        var sp = -1;
-        var cp = 0;
+    let stack = [];
+    var sp = -1;
+    var cp = 0;
 
-        var opcode = code[cp];
+    var opcode = code[cp];
 
-        while (opcode != OP.halt && cp < code.length) {
-            cp++;
+    while (opcode != OP.halt && cp < code.length) {
+        cp++;
 
-            var a, b, c;
+        var a, b, c;
 
-            switch (opcode) {
-                case OP.null:
-                    stack[++sp] = new CBNull();
-                    break;
-                case OP.pushstr:
-                    stack[++sp] = new CBString(string(code[cp++]));
-                    break;
-                case OP.fncall:
-                    a = []; //args array
-                    c = code[cp++]; //length of args
-                    for (var i = 1; i <= c; i++) {
-                        a.push(stack[sp--]);
-                    }
+        switch (opcode) {
+            case OP.null:
+                stack[++sp] = new CBNull();
+                break;
+            case OP.pushstr:
+                stack[++sp] = new CBString(string(code[cp++]));
+                break;
+            case OP.fncall:
+                a = []; //args array
+                c = code[cp++]; //length of args
+                for (var i = 1; i <= c; i++) {
+                    a.push(stack[sp--]);
+                }
 
-                    b = stack[sp--].toJsString(); //function name
+                b = stack[sp--].toJsString(); //function name
 
-                    if(mainScopeManager.varExists(scopeid, b)) {
-                        c = mainScopeManager.getFrom(scopeid, b);
+                if(mainScopeManager.varExists(scopeid, b)) {
+                    c = mainScopeManager.getFrom(scopeid, b);
 
-                        if(c.getTypename() !== "FUNCTION")
-                            throw new Error("Call on non function type " + c.getTypename() + " not allowed.")
-                        if(c.isNative()) {
-                            b = mainScopeManager.createScope(scopeid);
-                            mainScopeManager.getScope(b).feed(c.toArgsObject(a));
-                            cpu(c.getCodeBlock().block, b);
-                        } else {
-                            c.apply(a);
-                        }
+                    if(c.getTypename() !== "FUNCTION")
+                        throw new Error("Call on non function type " + c.getTypename() + " not allowed.")
+                    if(c.isNative()) {
+                        b = mainScopeManager.createScope(scopeid);
+                        mainScopeManager.getScope(b).feed(c.toArgsObject(a));
+                        cpu(c.getCodeBlock().block, b);
                     } else {
-                        throw new Error("Undefined Function " + b)
+                        c.apply(a);
                     }
+                } else {
+                    throw new Error("Undefined Function " + b)
+                }
 
-                    break;
-                case OP.pushnum:
-                    stack[++sp] = new CBNumber(code[cp++]);
-                    break;
-                case OP.valadd:
-                    b = stack[sp--];
-                    a = stack[sp--];
-                    stack[++sp] = CarbonValueMath.add(a, b);
-                    break;
-                case OP.valmlp:
-                    b = stack[sp--];
-                    a = stack[sp--];
-                    stack[++sp] = CarbonValueMath.multiply(a, b);
-                    break;
-                case OP.valdiv:
-                    b = stack[sp--];
-                    a = stack[sp--];
-                    stack[++sp] = CarbonValueMath.divide(a, b);
-                    break;
-                case OP.valsub:
-                    b = stack[sp--];
-                    a = stack[sp--];
-                    stack[++sp] = CarbonValueMath.subtract(a, b);
-                    break;
-                case OP.valmod:
-                    b = stack[sp--];
-                    a = stack[sp--];
-                    stack[++sp] = CarbonValueMath.modulus(a, b);
-                    break;
-                case OP.pushtrue:
-                    stack[++sp] = new CBBool(true);
-                    break;
-                case OP.pushfalse:
-                    stack[++sp] = new CBool(false);
-                    break;
-                case OP.opor:
-                    a = stack[sp--];
-                    b = stack[sp--];
-                    stack[++sp] = CarbonBooleanLogic.or(a, b);
-                    break;
-                case OP.opand:
-                    a = stack[sp--];
-                    b = stack[sp--];
-                    stack[++sp] = CarbonBooleanLogic.and(a, b);
-                    break;
-                case OP.opsmaller:
-                    a = stack[sp--];
-                    b = stack[sp--];
-                    stack[++sp] = CarbonBooleanLogic.smaller(a, b);
-                    break;
-                case OP.opgreater:
-                    a = stack[sp--];
-                    b = stack[sp--];
-                    stack[++sp] = CarbonBooleanLogic.greater(a, b);
-                    break;
-                case OP.opgreatereq:
-                    a = stack[sp--];
-                    b = stack[sp--];
-                    stack[++sp] = CarbonBooleanLogic.greatereq(a, b);
-                    break;
-                case OP.opsmallereq:
-                    a = stack[sp--];
-                    b = stack[sp--];
-                    stack[++sp] = CarbonBooleanLogic.smallereq(a, b);
-                    break;
-                case OP.opequal:
-                    a = stack[sp--];
-                    b = stack[sp--];
-                    stack[++sp] = CarbonBooleanLogic.equal(a, b);
-                    break;
-                case OP.opequal:
-                    a = stack[sp--];
-                    b = stack[sp--];
-                    stack[++sp] = CarbonBooleanLogic.notequal(a, b);
-                    break;
-                case OP.varload:
-                    stack[++sp] = mainScopeManager.getFrom(scopeid, string(code[cp++]));
-                    break;
-                case OP.varcreate:
-                    a = stack[sp--]; //values
-                    stack[++sp] = mainScopeManager.getScope(scopeid)
-                                                  .store(string(code[cp++]), a);
-                    break;
-                case OP.varstore:
-                    a = stack[sp--]; //values
-                    stack[++sp] = mainScopeManager.getScope(scopeid)
-                                                  .store(string(code[cp++]), a);
-                    break;
-                case OP.pushblock:
-                    stack[++sp] = new Block(block(code[cp++]), image);
-                    break;
-                case OP.fnlambda:
-                    c = code[cp++]; //length of args
-                    b = stack[sp--]; //block
-                    a = []; //args array
+                break;
+            case OP.pushnum:
+                stack[++sp] = new CBNumber(code[cp++]);
+                break;
+            case OP.valadd:
+                b = stack[sp--];
+                a = stack[sp--];
+                stack[++sp] = CarbonValueMath.add(a, b);
+                break;
+            case OP.valmlp:
+                b = stack[sp--];
+                a = stack[sp--];
+                stack[++sp] = CarbonValueMath.multiply(a, b);
+                break;
+            case OP.valdiv:
+                b = stack[sp--];
+                a = stack[sp--];
+                stack[++sp] = CarbonValueMath.divide(a, b);
+                break;
+            case OP.valsub:
+                b = stack[sp--];
+                a = stack[sp--];
+                stack[++sp] = CarbonValueMath.subtract(a, b);
+                break;
+            case OP.valmod:
+                b = stack[sp--];
+                a = stack[sp--];
+                stack[++sp] = CarbonValueMath.modulus(a, b);
+                break;
+            case OP.pushtrue:
+                stack[++sp] = new CBBool(true);
+                break;
+            case OP.pushfalse:
+                stack[++sp] = new CBool(false);
+                break;
+            case OP.opor:
+                a = stack[sp--];
+                b = stack[sp--];
+                stack[++sp] = CarbonBooleanLogic.or(a, b);
+                break;
+            case OP.opand:
+                a = stack[sp--];
+                b = stack[sp--];
+                stack[++sp] = CarbonBooleanLogic.and(a, b);
+                break;
+            case OP.opsmaller:
+                a = stack[sp--];
+                b = stack[sp--];
+                stack[++sp] = CarbonBooleanLogic.smaller(a, b);
+                break;
+            case OP.opgreater:
+                a = stack[sp--];
+                b = stack[sp--];
+                stack[++sp] = CarbonBooleanLogic.greater(a, b);
+                break;
+            case OP.opgreatereq:
+                a = stack[sp--];
+                b = stack[sp--];
+                stack[++sp] = CarbonBooleanLogic.greatereq(a, b);
+                break;
+            case OP.opsmallereq:
+                a = stack[sp--];
+                b = stack[sp--];
+                stack[++sp] = CarbonBooleanLogic.smallereq(a, b);
+                break;
+            case OP.opequal:
+                a = stack[sp--];
+                b = stack[sp--];
+                stack[++sp] = CarbonBooleanLogic.equal(a, b);
+                break;
+            case OP.opequal:
+                a = stack[sp--];
+                b = stack[sp--];
+                stack[++sp] = CarbonBooleanLogic.notequal(a, b);
+                break;
+            case OP.varload:
+                stack[++sp] = mainScopeManager.getFrom(scopeid, string(code[cp++]));
+                break;
+            case OP.varcreate:
+                a = stack[sp--]; //values
+                stack[++sp] = mainScopeManager.getScope(scopeid)
+                                              .store(string(code[cp++]), a);
+                break;
+            case OP.varstore:
+                a = stack[sp--]; //values
+                stack[++sp] = mainScopeManager.getScope(scopeid)
+                                              .store(string(code[cp++]), a);
+                break;
+            case OP.pushblock:
+                stack[++sp] = new Block(block(code[cp++]), image);
+                break;
+            case OP.fnlambda:
+                c = code[cp++]; //length of args
+                b = stack[sp--]; //block
+                a = []; //args array
 
-                    for (var i = 0; i < c; i++) {
-                        a.push(stack[sp--].toJsString());
-                    }
+                for (var i = 0; i < c; i++) {
+                    a.push(stack[sp--].toJsString());
+                }
 
-                    stack[++sp] = new CBFunction(true, b, a);
-                    break;
-                default:
-                    throw new Error(`Unexpected opcode: ${opcode} on address ${cp}`);
-            }
-
-            opcode = code[cp];
+                stack[++sp] = new CBFunction(true, b, a);
+                break;
+            default:
+                throw new Error(`Unexpected opcode: ${opcode} on address ${cp}`);
         }
+
+        opcode = code[cp];
     }
 
     function string(address) {
@@ -196,3 +196,6 @@ module.exports = function(image) {
         return image.blocks[address];
     }
 }
+
+module.exports.cpu = cpu;
+module.exports.ScopeManager = ScopeManager;
