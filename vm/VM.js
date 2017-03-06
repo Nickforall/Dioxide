@@ -71,9 +71,19 @@ function cpu(code, _scopeid, image, loopcall) {
                     if(c.getTypename() !== "FUNCTION")
                         throw new Error("Call on non function type " + c.getTypename() + " not allowed.")
                     if(c.isNative()) {
-                        c.execute(image, a, scopeid, mainScopeManager, cpu)
+                        let ret = c.execute(image, a, scopeid, mainScopeManager, cpu);
+
+                        stack[++sp] = new CBNull(); //since it isn't implemented, we push a null
                     } else {
-                        c.apply(image, a, scopeid, mainScopeManager, cpu);
+                        let ret = c.apply(image, a, scopeid, mainScopeManager, cpu);
+
+                        //if it returned, load that value in
+                        if(ret) {
+                            stack[++sp] = ret;
+                        } else {
+                            //otherwise, return a null
+                            stack[++sp] = new CBNull();
+                        }
                     }
                 } else {
                     throw new Error("Undefined Function " + b)

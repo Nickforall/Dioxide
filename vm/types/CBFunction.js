@@ -26,7 +26,7 @@ class CBFunction extends CarbonBase {
 
     apply(image, args, parentid, scopemanager, cpu) {
         if(!this.native) {
-            this.content.apply({
+            return this.content.apply({
                 CARBONVM: {
                     image: image,
                     args: args,
@@ -54,7 +54,6 @@ class CBFunction extends CarbonBase {
         //execute its instructions
         cpu(this.getCodeBlock().block, scopeid, image, true);
     }
-
     toArgsObject(argvals) {
         let obj = {};
 
@@ -66,7 +65,7 @@ class CBFunction extends CarbonBase {
         for (var i = 0; i < this.args.length; i++) {
             obj[this.args[i]] = argvals[i];
         }
-        
+
         return obj;
     }
 }
