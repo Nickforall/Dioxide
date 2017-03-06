@@ -11,24 +11,12 @@ class CarbonBase {
         return this.typename;
     }
 
-    toCbBoolean() {
-        //return new CBBool(this.toJsBoolean())
-    }
-
     toJsBoolean() {
         return true;
     }
 
-    toCbString() {
-        //return new CBString(this.toJsString());
-    }
-
     toJsString() {
         return "(Unknown Object)";
-    }
-
-    valAdd(value) {
-        //return new CBString(this.toJsString() + value.toJsString());
     }
 }
 

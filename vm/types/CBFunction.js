@@ -24,11 +24,19 @@ class CBFunction extends CarbonBase {
         return this.native;
     }
 
-    apply(args) {
+    apply(image, args, parentid, scopemanager, cpu) {
         if(!this.native) {
-            this.content.apply({}, args);
+            this.content.apply({
+                CARBONVM: {
+                    image: image,
+                    args: args,
+                    parentid: parentid,
+                    scopemanager: scopemanager,
+                    cpu: cpu
+                }
+            }, args);
         } else {
-            throw new Error("The VM tried executing a native function as non-native");
+            throw new Error("The VM tried applying a native function as non-native");
         }
     }
 
@@ -37,27 +45,28 @@ class CBFunction extends CarbonBase {
     }
 
     execute(image, args, parentid, scopemanager, cpu) {
-        let scope = scopemanager.createScope(parentid);
+        let scopeid = scopemanager.createScope(parentid);
+
         //feed our args in the function
-        scopemanager.getScope(scope)
-                    .feed(this.toArgsObject(args));
+        let scope = scopemanager.getScope(scopeid);
+        scope.feed(this.toArgsObject(args));
 
         //execute its instructions
-        cpu(this.getCodeBlock().block, scope, image);
+        cpu(this.getCodeBlock().block, scopeid, image, true);
     }
 
     toArgsObject(argvals) {
         let obj = {};
 
         //Make sure args are in the right order (Dioxide#6)
-        while (this.args.length != argvals.length) {
+        while (this.args.length > argvals.length) {
             argvals.unshift(new CBNull());
         }
 
         for (var i = 0; i < this.args.length; i++) {
             obj[this.args[i]] = argvals[i];
         }
-
+        
         return obj;
     }
 }

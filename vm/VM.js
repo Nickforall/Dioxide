@@ -35,7 +35,7 @@ module.exports.createVM = function(image) {
     }
 }
 
-function cpu(code, _scopeid, image) {
+function cpu(code, _scopeid, image, loopcall) {
     let scopeid = _scopeid;
 
     let stack = [];
@@ -73,7 +73,7 @@ function cpu(code, _scopeid, image) {
                     if(c.isNative()) {
                         c.execute(image, a, scopeid, mainScopeManager, cpu)
                     } else {
-                        c.apply(a);
+                        c.apply(image, a, scopeid, mainScopeManager, cpu);
                     }
                 } else {
                     throw new Error("Undefined Function " + b)
