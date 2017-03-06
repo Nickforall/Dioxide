@@ -118,9 +118,13 @@ function readTree(prog, image) {
 
     //build a call in bytecode
     function buildCall(expression) {
-        let nameAddress = image.pushString(expression.func.value);
+        if(expression.func.type == "var") {
+            let nameAddress = image.pushString(expression.func.value);
+            image.appendToMain([OP.varload, nameAddress]);
+        } else if (expression.func.type == "propVar") {
+            buildObjProperty(expression.func)
+        }
 
-        image.appendToMain([OP.pushstr, nameAddress]);
         for (var i = 0; i < expression.args.length; i++) {
             handleExpression(expression.args[i]);
         }

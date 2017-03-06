@@ -63,31 +63,30 @@ function cpu(code, _scopeid, image, loopcall) {
                     a.push(stack[sp--]);
                 }
 
-                b = stack[sp--].toJsString(); //function name
+                c = stack[sp--];
 
-                if(mainScopeManager.varExists(scopeid, b)) {
-                    c = mainScopeManager.getFrom(scopeid, b);
-
-                    if(c.getTypename() !== "FUNCTION")
-                        throw new Error("Call on non function type " + c.getTypename() + " not allowed.")
-                    if(c.isNative()) {
-                        let ret = c.execute(image, a, scopeid, mainScopeManager, cpu);
-
-                        stack[++sp] = new CBNull(); //since it isn't implemented, we push a null
-                    } else {
-                        let ret = c.apply(image, a, scopeid, mainScopeManager, cpu);
-
-                        //if it returned, load that value in
-                        if(ret) {
-                            stack[++sp] = ret;
-                        } else {
-                            //otherwise, return a null
-                            stack[++sp] = new CBNull();
-                        }
-                    }
-                } else {
+                if(!c || ( c._iscarbon && c.typename == "null")) {
                     throw new Error("Undefined Function " + b)
                 }
+
+                if(c.getTypename() !== "FUNCTION")
+                    throw new Error("Call on non function type " + c.getTypename() + " not allowed.")
+                if(c.isNative()) {
+                    let ret = c.execute(image, a, scopeid, mainScopeManager, cpu);
+
+                    stack[++sp] = new CBNull(); //since it isn't implemented, we push a null
+                } else {
+                    let ret = c.apply(image, a, scopeid, mainScopeManager, cpu);
+
+                    //if it returned, load that value in
+                    if(ret) {
+                        stack[++sp] = ret;
+                    } else {
+                        //otherwise, return a null
+                        stack[++sp] = new CBNull();
+                    }
+                }
+
 
                 break;
             case OP.pushnum:

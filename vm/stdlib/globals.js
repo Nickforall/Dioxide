@@ -4,6 +4,7 @@ const CBNumber = require("../types/CBNumber");
 const CBObject = require("../types/CBObject");
 
 const functions = {
+    system: require("./system.js"),
     print: new CBFunction(false, function(cbObject) {
         process.stdout.write(cbObject.toJsString());
     }),
