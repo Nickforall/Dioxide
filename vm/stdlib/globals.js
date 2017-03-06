@@ -43,7 +43,9 @@ const functions = {
     }),
     unixtime: new CBFunction(false, function() {
         return new CBNumber(Math.floor(Date.now() / 1000));
-    })
+    }),
+    PI: new CBNumber(Math.PI),
+    E: new CBNumber(Math.E)
 };
 
 module.exports = functions;
