@@ -89,8 +89,21 @@ function readTree(prog, image) {
             case "if":
                 buildIfStatement(expression);
                 break;
+            case "propVar":
+                buildObjProperty(expression);
+                break;
             default:
                 throw new Error(`Undefined SyntaxTree Expression Type "${expression.type}"`);
+        }
+    }
+
+    function buildObjProperty(expression) {
+        let varNameAddress = image.pushString(expression.value);
+        image.appendToMain([OP.varload, varNameAddress]);
+
+        for(child of expression.props) {
+            let propNameAddress = image.pushString(child.value);
+            image.appendToMain([OP.prop, propNameAddress]);
         }
     }
 

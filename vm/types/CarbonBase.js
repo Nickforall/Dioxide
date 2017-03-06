@@ -1,5 +1,4 @@
 const CBString = require('./CBString');
-//const CBBool = require('./CBBool');
 
 class CarbonBase {
     constructor(typename) {

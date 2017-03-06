@@ -146,6 +146,31 @@ function parse(input) {
         return isPunc("(") ? parseCall(expr) : expr;
     }
 
+    function makeObjectNotation(tok) {
+        var end = {
+            type: "propVar",
+            value: tok.value,
+            props: []
+        };
+
+        var next;
+
+        while (!input.eof()) {
+            if(!isPunc(".")) break;
+            
+            skipPunc(".");
+
+            if(input.peek().type == "var") {
+                end.props.push(input.next());
+            } else {
+                skipPunc(".");
+                break;
+            }
+        }
+
+        return end;
+    }
+
     function parseAtom() {
         return maybeCall(() => {
             if (isPunc("(")) {
@@ -167,8 +192,15 @@ function parse(input) {
 
             //if none of these, it's going to be a simple expression
             var tok = input.next();
-            if (tok.type == "var" || tok.type == "num" || tok.type == "str")
+            if (tok.type == "num" || tok.type == "str")
                 return tok;
+
+            if(tok.type == "var")
+                if(isPunc(".")) {
+                    return makeObjectNotation(tok);
+                } else {
+                    return tok;
+                }
 
             unexpected();
         });

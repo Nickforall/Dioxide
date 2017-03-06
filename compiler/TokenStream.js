@@ -56,7 +56,7 @@ function TokenStream(input) {
 
     //whether a char is punctuation
     function isPunc(ch) {
-        return ",;(){}[]".indexOf(ch) > -1;
+        return ",;(){}[].".indexOf(ch) > -1;
     }
 
     //whether a char is a whitespace

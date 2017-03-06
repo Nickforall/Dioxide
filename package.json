@@ -1,5 +1,6 @@
 {
   "name": "dioxide",
+  "version": "0.2.0",
   "scripts": {
     "test": "node compiler/tests/fullLanguageTest.js"
   },

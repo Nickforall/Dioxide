@@ -122,7 +122,7 @@ function cpu(code, _scopeid, image, loopcall) {
                 stack[++sp] = new CBBool(true);
                 break;
             case OP.pushfalse:
-                stack[++sp] = new CBool(false);
+                stack[++sp] = new CBBool(false);
                 break;
             case OP.opor:
                 a = stack[sp--];
@@ -190,6 +190,11 @@ function cpu(code, _scopeid, image, loopcall) {
                 }
 
                 stack[++sp] = new CBFunction(true, b, a);
+                break;
+            case OP.prop:
+                a = new CBString(string(code[cp++]));
+                b = stack[sp--];
+                stack[++sp] = b.getProperty(a.toJsString());
                 break;
             default:
                 throw new Error(`Unexpected opcode: ${opcode} on address ${cp}`);

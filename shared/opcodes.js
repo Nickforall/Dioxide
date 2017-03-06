@@ -26,5 +26,6 @@ module.exports = {
     ifblock: 24,
     pushblock: 25,
     fnlambda: 26,
-    halt: 27
+    halt: 27,
+    prop: 28
 }
