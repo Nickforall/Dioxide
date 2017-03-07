@@ -88,11 +88,18 @@ function cpu(code, _scopeid, image, loopcall) {
                         stack[++sp] = new CBNull();
                     }
                 }
-
-
                 break;
             case OP.pushnum:
                 stack[++sp] = new CBNumber(code[cp++]);
+                break;
+            case OP.pusharr:
+                a = []; //array array
+                c = code[cp++]; //length of arr
+                for (var i = 1; i <= c; i++) {
+                    a.push(stack[sp--]);
+                }
+
+                stack[++sp] = new CBArray(a);
                 break;
             case OP.valadd:
                 b = stack[sp--];

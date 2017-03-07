@@ -16,7 +16,7 @@ class CBObject extends CarbonBase {
         if(value.typename == "NULL") {
             this.content[prop] = undefined;
         } else {
-            if(value._iscarbon) throw new Error("Prop");
+            if(!value._iscarbon) throw new Error("Prop");
             this.content[prop] = value;
         }
     }
