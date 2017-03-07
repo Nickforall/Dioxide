@@ -1,26 +1,32 @@
-const Block = function (parent) {
-    var main = [];
+class Block {
+    constructor(parent) {
+        this.main = [];
+        this.parent = parent;
+    }
 
-    return {
-        type: "BLOCK",
-        pushString: function (str) {
-            if(!(parent.type && parent.type == "IMAGE")) throw new Error("Infinite image generation loop in pushString");
-            return parent.pushString(str);
-        },
-        pushToMain: function (bytecode) {
-            main.push(bytecode);
-        },
-        appendToMain: function (array) {
-            main = main.concat(array);
-        },
-        pushBlock: function (block) {
-            if(!(parent.type && parent.type == "IMAGE")) throw new Error("Infinite image generation loop in pushBlock");
-            return parent.pushBlock(block);
-        },
-        serialize: function() {
-            return main;
-        }
-    };
-};
+    pushString (str) {
+        if(!(this.parent.type && this.parent.type == "IMAGE"))
+            throw new Error("Infinite image generation loop in pushString");
+        return this.parent.pushString(str);
+    }
+
+    pushToMain (bytecode) {
+        this.main.push(bytecode);
+    }
+
+    appendToMain (array) {
+        this.main = this.main.concat(array);
+    }
+
+    pushBlock (block) {
+        if(!(this.parent.type && this.parent.type == "IMAGE"))
+            throw new Error("Infinite image generation loop in pushBlock");
+        return this.parent.pushBlock(block);
+    }
+
+    serialize() {
+        return this.main;
+    }
+}
 
 module.exports = Block;

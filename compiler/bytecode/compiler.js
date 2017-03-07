@@ -20,7 +20,7 @@ const operators = {
 };
 
 function buildImage(prog, callback) {
-    let image = Image();
+    let image = new Image();
 
     let outimage = readTree(prog, image);
 
@@ -32,7 +32,7 @@ function buildImage(prog, callback) {
 }
 
 function buildBlock(prog, image) {
-    let block = Block(image);
+    let block = new Block(image);
 
     return readTree(prog, block).serialize();
 }
