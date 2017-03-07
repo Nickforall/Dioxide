@@ -146,7 +146,7 @@ function TokenStream(input) {
         var ch = input.peek();
 
         //skip comments.
-        if (ch == "#") {
+        if (ch == "#" || ch == "/" && input.peekForward(1) == "/") {
             skipComment();
             return readNext();
         }

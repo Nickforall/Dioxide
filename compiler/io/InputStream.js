@@ -10,6 +10,7 @@ function InputStream(input) {
         peek  : peek,
         eof   : eof,
         croak : croak,
+        peekForward : peekForward,
     };
 
     //Shows the next value, and discards it from stream
@@ -25,6 +26,11 @@ function InputStream(input) {
     //shows the next value, but doesn't discard it yet.
     function peek() {
         return input.charAt(pos);
+    }
+
+    //shows the next + i value, but doesn't discard it yet
+    function peekForward(i) {
+        return input.charAt(pos + i)
     }
 
     //if the end of the file is reached, this will return true
