@@ -5,16 +5,13 @@ const CBObject = require("../types/CBObject");
 
 const functions = {
     system: require("./system.js"),
+    proc: require("./proc.js"),
     print: new CBFunction(false, function(cbObject) {
         process.stdout.write(cbObject.toJsString());
     }),
     println: new CBFunction(false, function(cbObject) {
         process.stdout.write(cbObject.toJsString() + "\r\n")
     }),
-    __testobj: new CBObject({
-        str: new CBString("Helloa")
-    }),
-    __executepath: new CBString(process.cwd()),
     sleep: new CBFunction(false, function(time, cbFunction) {
         let vmvars = this.CARBONVM;
 
