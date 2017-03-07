@@ -212,6 +212,9 @@ function cpu(code, _scopeid, image, loopcall) {
             case OP.valprop:
                 a = stack[sp--]; //val
                 b = stack[sp--]; //array
+
+                if(b.typename !== "ARRAY") throw new TypeError("Trying to get prop of non-array")
+
                 stack[++sp] = b.getValProperty(a);
                 break;
             default:
