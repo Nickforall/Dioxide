@@ -92,9 +92,22 @@ function readTree(prog, image) {
             case "propVar":
                 buildObjProperty(expression);
                 break;
+            case "array":
+                buildArray(expression);
+                break;
             default:
                 throw new Error(`Undefined SyntaxTree Expression Type "${expression.type}"`);
         }
+    }
+
+    function buildArray(expression) {
+        let entriesnum = expression.entries.length;
+
+        for(entry of expression.entries) {
+            handleExpression(entry)
+        }
+
+        image.appendToMain([OP.pusharr, entriesnum])
     }
 
     function buildObjProperty(expression) {

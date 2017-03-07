@@ -157,7 +157,7 @@ function parse(input) {
 
         while (!input.eof()) {
             if(!isPunc(".")) break;
-            
+
             skipPunc(".");
 
             if(input.peek().type == "var") {
@@ -171,6 +171,13 @@ function parse(input) {
         return end;
     }
 
+    function parseArray() {
+        return {
+            type: "array",
+            entries: delimited("[", "]", ",", parseExpression)
+        };
+    }
+
     function parseAtom() {
         return maybeCall(() => {
             if (isPunc("(")) {
@@ -180,6 +187,9 @@ function parse(input) {
                 return exp;
             }
 
+            if(isPunc("[")) {
+                return parseArray();
+            }
             if (isPunc("{")) return parseScript();
             if (isKeyword("if")) return parseIf();
             if (isKeyword("null")) return parseNull();
