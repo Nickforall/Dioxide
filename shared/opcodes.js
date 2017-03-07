@@ -27,5 +27,6 @@ module.exports = {
     pushblock: 25,
     fnlambda: 26,
     halt: 27,
-    prop: 28
+    prop: 28,
+    valprop: 29
 }

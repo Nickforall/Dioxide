@@ -171,6 +171,24 @@ function parse(input) {
         return end;
     }
 
+    function parseArrayProp(tok) {
+        var end = {
+            type: "arrPropVar",
+            value: tok.value,
+            props: []
+        };
+
+        while (!input.eof()) {
+            if(!isPunc("[")) break;
+
+            skipPunc("[");
+            end.props.push(parseExpression());
+            skipPunc("]");
+        }
+
+        return end;
+    }
+
     function parseArray() {
         return {
             type: "array",
@@ -208,6 +226,8 @@ function parse(input) {
             if(tok.type == "var")
                 if(isPunc(".")) {
                     return makeObjectNotation(tok);
+                } else if(isPunc("[")){
+                    return parseArrayProp(tok);
                 } else {
                     return tok;
                 }

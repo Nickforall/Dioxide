@@ -46,6 +46,11 @@ function cpu(code, _scopeid, image, loopcall) {
 
     var opcode = code[cp];
 
+    function quickDebug() {
+        console.log(stack)
+        console.log("POINTERS:", sp, cp)
+    }
+
     while (opcode != OP.halt && cp < code.length) {
         cp++;
 
@@ -203,6 +208,11 @@ function cpu(code, _scopeid, image, loopcall) {
                 a = new CBString(string(code[cp++]));
                 b = stack[sp--];
                 stack[++sp] = b.getProperty(a.toJsString());
+                break;
+            case OP.valprop:
+                a = stack[sp--]; //val
+                b = stack[sp--]; //array
+                stack[++sp] = b.getValProperty(a);
                 break;
             default:
                 throw new Error(`Unexpected opcode: ${opcode} on address ${cp}`);
