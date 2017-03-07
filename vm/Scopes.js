@@ -1,4 +1,6 @@
 const CBNull = require('./types/CBNull');
+const debug = require('debug')('vm:scopes');
+
 
 class ScopeManager {
     constructor() {
@@ -51,6 +53,7 @@ class Scope {
     }
 
     store(name, value) {
+        debug("storing var " + name + " with value  %O", value);
         this.variables[name] = value;
     }
 

@@ -1,5 +1,6 @@
 const CarbonBase = require("./CarbonBase");
 const CBNull = require("./CBNull");
+const debug = require('debug')('vm-types:functions');
 
 const VM = require("../VM");
 
@@ -25,6 +26,7 @@ class CBFunction extends CarbonBase {
     }
 
     apply(image, args, parentid, scopemanager, cpu) {
+        debug("Executing non-native Carbon function with args %O", args)
         if(!this.native) {
             return this.content.apply({
                 CARBONVM: {
@@ -45,6 +47,7 @@ class CBFunction extends CarbonBase {
     }
 
     execute(image, args, parentid, scopemanager, cpu) {
+        debug("Executing native Carbon function with args %O", args)
         let scopeid = scopemanager.createScope(parentid);
 
         //feed our args in the function
@@ -54,6 +57,7 @@ class CBFunction extends CarbonBase {
         //execute its instructions
         cpu(this.getCodeBlock().block, scopeid, image, true);
     }
+    
     toArgsObject(argvals) {
         let obj = {};
 

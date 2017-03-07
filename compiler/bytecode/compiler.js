@@ -1,3 +1,5 @@
+const debug = require('debug')('bytecode-compiler');
+
 const OP = require('../../shared/opcodes');
 const colors = require('colors');
 const Image = require('./image/image');
@@ -55,6 +57,8 @@ function readTree(prog, image) {
 
     //basic for handling a tree object
     function handleExpression(expression) {
+        debug("Handling an expression: " + expression.type)
+
         switch (expression.type) {
             case "var":
                 buildVarLoad(expression);

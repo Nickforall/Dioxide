@@ -1,3 +1,5 @@
+const debug = require('debug')('blocks');
+
 class Block {
     constructor(parent) {
         this.main = [];
@@ -11,11 +13,16 @@ class Block {
     }
 
     pushToMain (bytecode) {
+        debug("Pushed " + bytecode + " to main");
         this.main.push(bytecode);
     }
 
     appendToMain (array) {
         this.main = this.main.concat(array);
+
+        for (let bytecode of array) {
+            debug("Pushed " + bytecode + " to main");
+        }
     }
 
     pushBlock (block) {

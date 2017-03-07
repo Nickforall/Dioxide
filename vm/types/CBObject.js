@@ -1,5 +1,6 @@
 const CarbonBase = require("./CarbonBase");
 const CBNull = require("./CBNull");
+const debug = require('debug')('vm-types:object');
 
 class CBObject extends CarbonBase {
     constructor(obj) {
@@ -13,6 +14,7 @@ class CBObject extends CarbonBase {
     }
 
     setProperty(prop, value) {
+        debug("Setting " + prop + " property of object (type:" + this.typename + ") %O", value)
         if(value.typename == "NULL") {
             this.content[prop] = undefined;
         } else {
