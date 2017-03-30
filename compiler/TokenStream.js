@@ -149,8 +149,21 @@ function TokenStream(input) {
         return token("str", readEscaped('"'));
     }
 
-    function skipComment() {
-        readWhile((ch) => { return ch != "\n" });
+    function skipComment(ending, ending_second) {
+        if(ending_second) {
+            readWhile((ch) => {
+                if(ch == ending) {
+                    return input.peekForward(1) != ending_second
+                }
+
+                return true;
+            });
+
+            input.next();
+        } else {
+            readWhile((ch) => { return ch != ending});
+        }
+
         input.next();
     }
 
@@ -167,7 +180,12 @@ function TokenStream(input) {
 
         //skip comments.
         if (ch == "#" || ch == "/" && input.peekForward(1) == "/") {
-            skipComment();
+            skipComment("\n");
+            return readNext();
+        }
+
+        if (ch == "/" && input.peekForward(1) == "*") {
+            skipComment("*", "/");
             return readNext();
         }
 
