@@ -201,6 +201,25 @@ function parse(input) {
         };
     }
 
+    function parseObjectEntry() {
+        let propertyName = parseExpression();
+        skipPunc(":");
+        let property = parseExpression();
+
+        return {
+            type: "objectProp",
+            name: propertyName,
+            prop: property
+        }
+    }
+
+    function parseObject() {
+        return {
+            type: "object",
+            entries: delimited("{", "}", ",", parseObjectEntry)
+        };
+    }
+
     function parseAtom() {
         return maybeCall(() => {
             if (isPunc("(")) {
@@ -212,6 +231,10 @@ function parse(input) {
 
             if(isPunc("[")) {
                 return parseArray();
+            }
+
+            if(isPunc("{")) {
+                return parseObject();
             }
 
             if (isPunc("{")) return parseScript();
