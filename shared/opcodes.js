@@ -28,5 +28,6 @@ module.exports = {
     fnlambda: 26,
     halt: 27,
     prop: 28,
-    valprop: 29
+    valprop: 29,
+    pushtype: 30
 }

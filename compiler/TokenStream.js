@@ -1,6 +1,6 @@
 function TokenStream(input) {
     var current = null;
-    var keywords = [
+    const keywords = [
         "var",
         "if",
         "then",
@@ -11,6 +11,15 @@ function TokenStream(input) {
         "λ",
         "null"
     ];
+
+    const types = [
+        "num",
+        "str",
+        "bool",
+        "arr",
+        "obj",
+        "lambda"
+    ]
 
     return {
         next  : next,
@@ -32,6 +41,10 @@ function TokenStream(input) {
     //whether a word is a keyword
     function isKeyword(x) {
         return keywords.indexOf(x) > -1;
+    }
+
+    function isType(x) {
+        return types.indexOf(x) > -1;
     }
 
     //whether a character is a digit
@@ -99,7 +112,14 @@ function TokenStream(input) {
 
     function readIdent() {
         var id = readWhile(isId);
-        return token(isKeyword(id) ? "kw" : "var", id)
+
+        if(isKeyword(id)) {
+            return token("kw", id);
+        } else if(isType(id)){
+            return token("type", id);
+        }
+
+        return token("var", id)
     }
 
     function readEscaped(end) {

@@ -9,56 +9,56 @@ function isBool(value1, value2) {
 }
 
 module.exports = {
-    or: function(value1, value2) {
+    or: (value1, value2) => {
         if(isBool(value1, value2)) {
             return new CBBool(value1.toJsBoolean() || value2.toJsBoolean())
         } else {
             return new CBBool(false)
         }
     },
-    and: function(value1, value2) {
+    and: (value1, value2) => {
         if(isBool(value1, value2)) {
             return new CBBool(value1.toJsBoolean() && value2.toJsBoolean())
         } else {
             return new CBBool(false)
         }
     },
-    smaller: function(value1, value2) {
+    smaller: (value1, value2) => {
         if(isNumber(value1, value2)) {
             return new CBBool(value1.toJsNumber() > value2.toJsNumber())
         } else {
             return new CBBool(false)
         }
     },
-    greater: function(value1, value2) {
+    greater: (value1, value2) => {
         if(isNumber(value1, value2)) {
             return new CBBool(value1.toJsNumber() < value2.toJsNumber())
         } else {
             return new CBBool(false)
         }
     },
-    greatereq: function(value1, value2) {
+    greatereq: (value1, value2) => {
         if(isNumber(value1, value2)) {
             return new CBBool(value1.toJsNumber() >= value2.toJsNumber())
         } else {
             return new CBBool(false)
         }
     },
-    smallereq: function(value1, value2) {
+    smallereq: (value1, value2) => {
         if(isNumber(value1, value2)) {
             return new CBBool(value1.toJsNumber() <= value2.toJsNumber())
         } else {
             return new CBBool(false)
         }
     },
-    equal: function(value1, value2) {
+    equal: (value1, value2) => {
         if(isNumber(value1, value2)) {
             return new CBBool(value1.toJsNumber() == value2.toJsNumber())
         } else {
             return new CBBool(false)
         }
     },
-    notequal: function(value1, value2) {
+    notequal: (value1, value2) => {
         if(isNumber(value1, value2)) {
             return new CBBool(value1.toJsNumber() != value2.toJsNumber())
         } else {

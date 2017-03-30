@@ -1,7 +1,7 @@
 var FALSE = { type: "bool", value: false };
 
 function parse(input) {
-    var PRECEDENCE = {
+    const PRECEDENCE = {
         "=": 1,
         "||": 2,
         "&&": 3,
@@ -21,6 +21,11 @@ function parse(input) {
     function isKeyword(kw) {
         var tok = input.peek();
         return tok && tok.type == "kw" && (!kw || tok.value == kw) && tok;
+    }
+
+    function isType(tp) {
+        var tok = input.peek();
+        return tok && tok.type == "type" && (!tp || tok.value == tp) && tok;
     }
 
     function isOperator(op) {
@@ -208,11 +213,13 @@ function parse(input) {
             if(isPunc("[")) {
                 return parseArray();
             }
+
             if (isPunc("{")) return parseScript();
             if (isKeyword("if")) return parseIf();
             if (isKeyword("null")) return parseNull();
             if (isKeyword("true") || isKeyword("false")) return parseBool();
             if (isKeyword("var")) return parseVarInitializer();
+            if (isType()) return parseType();
             if (isKeyword("fn") || isKeyword("λ")) {
                 input.next();
                 return parseLambda();
@@ -234,6 +241,13 @@ function parse(input) {
 
             unexpected();
         });
+    }
+
+    function parseType() {
+        return {
+            type  : "type",
+            value : input.next().value
+        };
     }
 
     function parseTopLevel() {
