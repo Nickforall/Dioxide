@@ -1,4 +1,6 @@
-exports.baseToType = function (base) {
+const CBType = require("../types/CBType");
+
+module.exports.baseToType = function (base) {
     switch (base.typename) {
         case "NUMBER":
             return new CBType(0);

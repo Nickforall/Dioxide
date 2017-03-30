@@ -24,10 +24,6 @@ class CBType extends CarbonBase {
         return STRINGS.indexOf(typestr);
     }
 
-    getTypename() {
-        return this.toJsString();
-    }
-
     toJsString() {
         return STRINGS[this.typenum];
     }
