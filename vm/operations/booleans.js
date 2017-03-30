@@ -1,5 +1,5 @@
 const CBBool = require("../types/CBBool");
-
+const Helper = require("./helpers")
 function isNumber(value1, value2) {
     return (value1.getTypename() == "NUMBER" && value2.getTypename() == "NUMBER");
 }
@@ -52,7 +52,7 @@ module.exports = {
         if(isNumber(value1, value2)) {
             return new CBBool(value1.toJsNumber() <= value2.toJsNumber())
         } else if(oneIsType(value1, value2)) {
-            return new CBBool(value1.toCbType().typenum == value1.toCbType().typenum)
+            return new CBBool(helpers.baseToType(value1).typenum == helpers.baseToType(value2).typenum)
         } else {
             return new CBBool(false)
         }
@@ -61,7 +61,9 @@ module.exports = {
         if(isNumber(value1, value2)) {
             return new CBBool(value1.toJsNumber() == value2.toJsNumber())
         } else if(oneIsType(value1, value2)) {
-            return new CBBool(value1.toCbType().typenum == value1.toCbType().typenum)
+            let t = new CBBool(helpers.baseToType(value1).typenum == helpers.baseToType(value2).typenum);
+            console.log(t)
+            return t;
         } else {
             return new CBBool(false)
         }

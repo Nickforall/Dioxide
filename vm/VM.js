@@ -8,6 +8,7 @@ const CBBool = require("./types/CBBool");
 const CBObject = require("./types/CBObject");
 const CBArray = require("./types/CBArray");
 const CBNull = require("./types/CBNull");
+const CBType = require("./types/CBType");
 const CBFunction = require("./types/CBFunction");
 const ScopeClasses = require('./Scopes');
 const Block = require("./types/Block");
@@ -216,6 +217,9 @@ function cpu(code, _scopeid, image, loopcall) {
                 if(b.typename !== "ARRAY") throw new TypeError("Trying to get prop of non-array")
 
                 stack[++sp] = b.getValProperty(a);
+                break;
+            case OP.pushtype:
+                stack[++sp] = new CBType(code[cp++]);
                 break;
             default:
                 throw new Error(`Unexpected opcode: ${opcode} on address ${cp}`);

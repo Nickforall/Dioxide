@@ -4,7 +4,7 @@ const OP = require('../../shared/opcodes');
 const colors = require('colors');
 const Image = require('./image/image');
 const Block = require('./image/block');
-
+const CBType = require('../../vm/types/CBType')
 const operators = {
     "||": OP.opor,
     "&&": OP.opand,
@@ -102,9 +102,17 @@ function readTree(prog, image) {
             case "array":
                 buildArray(expression);
                 break;
+            case "type":
+                buildTypeConstant(expression);
+                break;
             default:
                 throw new Error(`Undefined SyntaxTree Expression Type "${expression.type}"`);
         }
+    }
+
+    function buildTypeConstant(expression) {
+        let typenum = CBType.getNumByType(expression.value);
+        image.appendToMain([OP.pushtype, typenum]);
     }
 
     function buildArrayProp(expression) {
