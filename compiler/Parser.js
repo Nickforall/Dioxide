@@ -130,7 +130,7 @@ function parse(input) {
         return {
             type: "function",
             args: delimited("(", ")", ",", parseVarName),
-            body: parseExpression()
+            body: parseScript()
         };
     }
     function parseBool() {
@@ -237,7 +237,6 @@ function parse(input) {
                 return parseObject();
             }
 
-            if (isPunc("{")) return parseScript();
             if (isKeyword("if")) return parseIf();
             if (isKeyword("null")) return parseNull();
             if (isKeyword("true") || isKeyword("false")) return parseBool();

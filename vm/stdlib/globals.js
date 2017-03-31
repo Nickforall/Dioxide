@@ -51,6 +51,9 @@ const functions = {
                 vmvars.cpu
             );
         }
+    }),
+    net: new CBObject({
+        http: require("./http.js")
     })
 };
 
