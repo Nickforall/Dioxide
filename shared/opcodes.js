@@ -29,5 +29,7 @@ module.exports = {
     halt: 27,
     prop: 28,
     valprop: 29,
-    pushtype: 30
+    pushtype: 30,
+    objcreate: 31,
+    setprop: 32
 }

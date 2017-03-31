@@ -221,6 +221,16 @@ function cpu(code, _scopeid, image, loopcall) {
             case OP.pushtype:
                 stack[++sp] = new CBType(code[cp++]);
                 break;
+            case OP.objcreate:
+                stack[++sp] = new CBObject({});
+                break;
+            case OP.setprop:
+                a = stack[sp--]; //prop
+                b = stack[sp--]; //name
+                c = stack[sp]; //object
+
+                c.setProperty(b.toJsString(), a);
+                break;
             default:
                 throw new Error(`Unexpected opcode: ${opcode} on address ${cp}`);
         }

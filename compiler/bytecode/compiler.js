@@ -105,6 +105,9 @@ function readTree(prog, image) {
             case "type":
                 buildTypeConstant(expression);
                 break;
+            case "object":
+                buildObject(expression);
+                break;
             default:
                 throw new Error(`Undefined SyntaxTree Expression Type "${expression.type}"`);
         }
@@ -233,6 +236,23 @@ function readTree(prog, image) {
         handleExpression(expression.cond);
         image.appendToMain([OP.pushblock, blockAddress]);
         image.appendToMain([OP.ifblock]);
+    }
+
+    function buildObjectProp(prop) {
+        if(!prop.name.type) throw new Error("Empty prop");
+        if(prop.name.type == "var") prop.name.type = "str";
+        if(prop.name.type !== "str") throw new Error("Names can only be strings right");
+
+        handleExpression(prop.name);
+        handleExpression(prop.prop);
+        image.pushToMain(OP.setprop);
+    }
+
+    function buildObject(expression) {
+        image.pushToMain(OP.objcreate);
+        for(let prop of expression.entries) {
+            buildObjectProp(prop);
+        }
     }
 
     //loop through the top script
