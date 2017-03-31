@@ -239,7 +239,9 @@ function readTree(prog, image) {
     }
 
     function buildObjectProp(prop) {
-        if(!prop.name.type || prop.name.type !== "str") throw new Error("Names can only be strings right");
+        if(!prop.name.type) throw new Error("Empty prop");
+        if(prop.name.type == "var") prop.name.type = "str";
+        if(prop.name.type !== "str") throw new Error("Names can only be strings right");
 
         handleExpression(prop.name);
         handleExpression(prop.prop);
