@@ -2,6 +2,8 @@ function TokenStream(input) {
     var current = null;
     const keywords = [
         "var",
+        "const",
+        "let",
         "if",
         "then",
         "else",

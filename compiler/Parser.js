@@ -92,15 +92,29 @@ function parse(input) {
 
     function parseVarName() {
         var name = input.next();
-        if (name.type != "var") input.croak("Expecting variable name");
+        if (name.type != "var" && name.type != "const" && name.type != "let")
+            input.croak("Expecting variable name");
         return name.value;
     }
 
     function parseVarInitializer() {
-        skipKeyword("var");
+        let varType;
+
+        if(isKeyword("let")) {
+            varType = "let";
+            skipKeyword("let");
+        } else if(isKeyword("const")){
+            varType = "const";
+            skipKeyword("const");
+        } else {
+            varType = "var";
+            skipKeyword("var");
+        }
+
 
         return {
-            type: "varInit",
+            type: "varCreate",
+            varType: varType,
             value: parseVarName()
         }
     }
@@ -251,7 +265,7 @@ function parse(input) {
             if (isKeyword("if")) return parseIf();
             if (isKeyword("null")) return parseNull();
             if (isKeyword("true") || isKeyword("false")) return parseBool();
-            if (isKeyword("var")) return parseVarInitializer();
+            if (isKeyword("var") || isKeyword("let") || isKeyword("const")) return parseVarInitializer();
             if (isType()) return parseType();
             if (isKeyword("fn") || isKeyword("λ")) {
                 input.next();

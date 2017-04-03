@@ -75,7 +75,7 @@ function readTree(prog, image) {
             case "binary":
                 buildBinary(expression);
                 break;
-            case "varInit":
+            case "varCreate":
                 buildVarInitNull(expression);
                 break;
             case "bool":
