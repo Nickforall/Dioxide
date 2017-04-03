@@ -12,6 +12,10 @@ class CBNull extends CarbonBase {
     toJsBoolean() {
         return false;
     }
+
+    toJsVal() {
+        return null;
+    }
 }
 
 module.exports = CBNull;

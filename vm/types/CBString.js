@@ -10,6 +10,10 @@ class CBString extends CarbonBase {
     toJsString() {
         return this.content;
     }
+
+    toJsVal() {
+        return this.content;
+    }
 }
 
 module.exports = CBString;

@@ -18,6 +18,10 @@ class CBBool extends CarbonBase {
     toJsBoolean() {
         return this.content;
     }
+
+    toJsVal() {
+        return this.content;
+    }
 }
 
 module.exports = CBBool;

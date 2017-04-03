@@ -57,7 +57,7 @@ class CBFunction extends CarbonBase {
         //execute its instructions
         cpu(this.getCodeBlock().block, scopeid, image, true);
     }
-    
+
     toArgsObject(argvals) {
         let obj = {};
 

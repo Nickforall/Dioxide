@@ -19,6 +19,10 @@ class CarbonBase {
     toJsString() {
         return "(Unknown Object)";
     }
+
+    toJsVal() {
+        return null;
+    }
 }
 
 module.exports = CarbonBase;

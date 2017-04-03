@@ -22,6 +22,10 @@ class CBObject extends CarbonBase {
             this.content[prop] = value;
         }
     }
+
+    toJsVal() {
+        return this.content;
+    }
 }
 
 module.exports = CBObject;
