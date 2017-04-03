@@ -126,13 +126,24 @@ function parse(input) {
         }
         return ret;
     }
+
     function parseLambda() {
+        let name;
+
+        if(isPunc("(")) {
+            name = undefined;
+        } else {
+            name = parseVarName();
+        }
+
         return {
             type: "function",
+            name: name,
             args: delimited("(", ")", ",", parseVarName),
             body: parseScript()
         };
     }
+
     function parseBool() {
         return {
             type  : "bool",

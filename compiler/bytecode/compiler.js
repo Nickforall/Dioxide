@@ -227,6 +227,11 @@ function readTree(prog, image) {
 
         image.appendToMain([OP.pushblock, blockAddress]);
         image.appendToMain([OP.fnlambda, expression.args.length]);
+
+        if(expression.name) {
+            let nameAddress = image.pushString(expression.name);
+            image.appendToMain([OP.varcreate, nameAddress]);
+        }
     }
 
     //builds if statement
