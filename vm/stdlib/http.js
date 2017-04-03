@@ -3,6 +3,25 @@ const CBString = require("../types/CBString");
 const CBNumber = require("../types/CBNumber");
 const CBObject = require("../types/CBObject");
 const CBNull = require("../types/CBNull");
+const request = require('request');
+
+function buildCarbonResponse(res) {
+    var out = {};
+
+    out.statusCode = new CBNumber(res.statusCode);
+    out.body = new CBString(res.body);
+    out.version = new CBString(res.httpVersion);
+
+    out.headers = {};
+
+    for (var header in res.headers) {
+        if (res.headers.hasOwnProperty(header)) {
+            out.headers[header] = new CBString(res.headers[header]);
+        }
+    }
+
+    return new CBObject(out);
+}
 
 
 const defaults = {
@@ -45,7 +64,21 @@ const httplib = new CBFunction(false, function(cb, options) {
 
     out.headers = headersOut;
 
-    console.log(out)
+    let vmvars = this.CARBONVM;
+
+    request(out, function(error, response) {
+        if(error) throw new Error("Something went wrong with your http request");
+
+        let cbResObject = buildCarbonResponse(response);
+
+        cb.execute(
+            vmvars.image,
+            [cbResObject],
+            vmvars.parentid,
+            vmvars.scopemanager,
+            vmvars.cpu
+        );
+    });
 
     return new CBNull();
 });
