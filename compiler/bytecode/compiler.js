@@ -175,7 +175,7 @@ function readTree(prog, image) {
 
     //builds assigning vars and reassigning them
     function buildAssign(expression) {
-        if(expression.left.type == "varInit") {
+        if(expression.left.type == "varCreate") {
             var nameAddress = image.pushString(expression.left.value);
             handleExpression(expression.right);
             image.appendToMain([OP.varcreate, nameAddress]);

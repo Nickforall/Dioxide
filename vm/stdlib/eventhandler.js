@@ -9,10 +9,9 @@ const EventEmitter = require('events');
 class CBEventEmitter extends EventEmitter {};
 
 const eventslib = {
-    createHandler: new CBFunction(false, function(cb, options) {
+    createHandler: new CBFunction(false, (cb, options) => {
         let vmvars = this.CARBONVM;
-
-        var handler = new CBEventEmitter();
+        let handler = new CBEventEmitter();
 
         var on = function (cb, eventname) {
             if(cb.getTypename() !== "FUNCTION") throw new Error("Callback expected");
