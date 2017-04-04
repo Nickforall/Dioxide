@@ -54,7 +54,8 @@ const functions = {
     }),
     net: new CBObject({
         http: require("./http.js")
-    })
+    }),
+    events: require("./eventhandler")
 };
 
 module.exports = functions;
